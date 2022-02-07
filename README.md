@@ -11,7 +11,7 @@
 
 - [Node.js](https://nodejs.org/)
 - [npm](https://www.npmjs.com/)
-- [Express.js](https://expressjs.com/)
+- [Express.js](https://expressjs.npm install exprescom/)
 - [SQLite](https://www.npmjs.com/package/sqlite/)
 - [BCrypt](https://www.npmjs.com/package/bcrypt/) _(endast för bonusuppgiften)_
 
