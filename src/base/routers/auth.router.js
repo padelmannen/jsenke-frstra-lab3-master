@@ -7,13 +7,13 @@ const privateRouter = Router();
 
 publicRouter.post("/login", (req, res) => {
   console.log(req.body);
-
+     //nytt som kommer vid klickning av inlogg
   // FIXME
 
   db.each("SELECT rowid AS id, info FROM lorem", (err, row) => {
     if (err) {
       throw new Error(err);
-    }
+    } 
     console.log(`${row.id}: ${row.info}`);
   });
 
