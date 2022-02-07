@@ -6,6 +6,7 @@ const publicRouter = Router();
 const privateRouter = Router();
 
 publicRouter.post("/login", (req, res) => {
+  // console.log("hej")
   console.log(req.body);
   // nytt som kommer vid klickning av inlogg
   // FIXME
@@ -14,6 +15,7 @@ publicRouter.post("/login", (req, res) => {
     if (err) {
       throw new Error(err);
     }
+    if (row = "")
     console.log(`${row.id}: ${row.info}`);
   });
 
