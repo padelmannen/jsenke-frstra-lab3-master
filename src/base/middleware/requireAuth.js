@@ -1,5 +1,5 @@
 const requireAuth = (req, res, next) => {
-  // FIXME
+  console.log("body: ", req.body)
   next();
 };
 

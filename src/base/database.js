@@ -19,16 +19,20 @@ export default await (async () => {
     driver: sqlite3.Database,
   });
 
-  await db.run("DROP TABLE IF EXISTS users");  // ändra
-  await db.run("CREATE TABLE users (username TEXT, password TEXT)");  // ändra
+  await db.run("DROP TABLE IF EXISTS users"); // ändra
+  await db.run("CREATE TABLE users (username TEXT, password TEXT)"); // ändra
 
-  const statement = await db.prepare("INSERT INTO users (username, password) VALUES ('jesper','123')");
+  const statement = await db.prepare(
+    "INSERT INTO users (username, password) VALUES ('jesper','123')"
+  );
   // for (let i = 0; i < 10; i += 1) {
   //   // statement.run(`user ${i}, password ${i}`);
   //   statement.run(`"user"${i}, "password"${i}`)
   // }
   statement.run();
-  const statement2 = await db.prepare("INSERT INTO users (username, password) VALUES ('johan','321')");
+  const statement2 = await db.prepare(
+    "INSERT INTO users (username, password) VALUES ('johan','321')"
+  );
   statement2.run();
   statement.finalize();
 
