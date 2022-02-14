@@ -11,6 +11,7 @@ const app = express();
 
 // Register a custom middleware for logging incoming requests
 app.use(logAndTime);
+// app.use(requireAuth); // new
 
 // Register a middleware that adds support for a URL encoded request body
 // This is needed in order to send data to express using a FORM with a POST action

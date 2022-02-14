@@ -1,6 +1,10 @@
 const requireAuth = (req, res, next) => {
-  // console.log("body: ", req.body)
   next();
+  console.log("kör requireAuth middleware")
+  console.log(
+    `[${res.method}] ${req.cookie} ${req.url}`
+  );
+  
 };
 
 export default requireAuth;
