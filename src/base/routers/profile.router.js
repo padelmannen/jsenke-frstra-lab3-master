@@ -4,10 +4,10 @@ import { readFile, resolvePublicPath } from "../util.js";
 const privateRouter = Router();
 
 privateRouter.get("/", async (req, res) => {
-  console.log("getheader")
-  console.log(req.head)   // new
-  console.log("getbody")
-  console.log(req.body);
+  // console.log("getheader")
+  // console.log(req.head)   // new
+  // console.log("getbody")
+  // console.log(req.body);
   
 
   const htmlDoc = (await readFile(resolvePublicPath("index.html"))).replace(

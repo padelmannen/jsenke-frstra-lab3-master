@@ -4,12 +4,12 @@ import { readFile, resolvePublicPath } from "../util.js";
 const publicRouter = Router();
 
 publicRouter.get("/login", async (req, res) => {
-  console.log("pubRuter Body: ")
-  console.log(req.head)
+  // console.log("pubRuter Body: ")
+  // console.log(req.head)
 
   
-  console.log("pubRuter Body: ")
-  console.log(req.body);
+  // console.log("pubRuter Body: ")
+  // console.log(req.body);
 
   const htmlDoc = await readFile(resolvePublicPath("login.html"));
 

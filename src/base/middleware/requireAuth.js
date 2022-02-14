@@ -1,5 +1,5 @@
 const requireAuth = (req, res, next) => {
-  console.log("body: ", req.body)
+  // console.log("body: ", req.body)
   next();
 };
 
