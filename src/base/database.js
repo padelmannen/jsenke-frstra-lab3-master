@@ -34,6 +34,10 @@ export default await (async () => {
     "INSERT INTO users (username, password) VALUES ('johan','321')"
   );
   statement2.run();
+  const statement3 = await db.prepare(
+    "INSERT INTO users (username, password) VALUES ('fredrik','123')"
+  );
+  statement3.run();
   statement.finalize();
 
   return db;

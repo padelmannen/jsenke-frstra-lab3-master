@@ -120,12 +120,12 @@ publicRouter.post("/registration", (req, res) => {
   if (okUser){
     insertToDatabase(username, password)
     const session = sessionManager.createNewSession();
-    res.cookie("session-id", session.id).redirect("/login");
+    res.cookie("session-id", session.id).redirect("/");
   }
   else{
     res.redirect("/registration?error=felaktig input")
   }
-
+  
 });
 
 privateRouter.post("/logout", (req, res) => {
@@ -133,7 +133,7 @@ privateRouter.post("/logout", (req, res) => {
 
   // FIXME
 
-  res.redirect("/login?error=FIXME");
+  res.redirect("/login?success=Du är utloggad!");
 });
 
 export default {
