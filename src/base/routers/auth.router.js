@@ -72,19 +72,11 @@ publicRouter.post("/login", (req, res) => {
       }
       else{
         const session = sessionManager.createNewSession();
-        res.cookie("session-id", session.id).redirect("/");
+        console.log("OK")
+        res.cookie("session-id", session.id).redirect("/index");
       }
     // console.log("done each()")
-  
-  
-
-
-
-
   })
-   
-
- 
 })
 
 
@@ -117,7 +109,8 @@ privateRouter.post("/logout", (req, res) => {
 
   // FIXME
 
-  res.redirect("/login?error=FIXME");
+  res.redirect("/login");
+  // res.redirect("/login?error=FIXME");
 });
 
 export default {
