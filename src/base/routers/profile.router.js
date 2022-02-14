@@ -10,7 +10,7 @@ privateRouter.get("/", async (req, res) => {
   // console.log(req.body);
   // console.log("req", req)
   console.log("kör privat router profile")
-  console.log(req.cookie)
+  console.log(req.headers.cookie)
   console.log(req.method)
 
   const htmlDoc = (await readFile(resolvePublicPath("index.html"))).replace(
