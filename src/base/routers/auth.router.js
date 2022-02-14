@@ -82,7 +82,7 @@ publicRouter.post("/login", (req, res) => {
   if (match === true) {
     console.log("match");
     const session = sessionManager.createNewSession();
-    res.cookie("session-id", session.id).redirect("/");
+    res.cookie("session-id", session.id).redirect("/index");
   } else {
     console.log("no match");
     res.redirect("/login");
