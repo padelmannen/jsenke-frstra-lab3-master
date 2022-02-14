@@ -50,6 +50,10 @@ async function invalidNewUsername(username) {
   return false;
 }
 
+function insertToDatabase(username, password){
+  db.run("INSERT INTO users (username, password) VALUES (?,?)",[username, password]);
+  }
+
 async function logIn(username, password) {
   let match = false;
   await db.each(
@@ -66,32 +70,32 @@ async function logIn(username, password) {
       }
     }
   );
-
+  
   console.log(match);
   return match;
 }
 
 publicRouter.post("/login", (req, res) => {
   console.log(req.body);
-  let match = false;
+  // let match = false;
   const { username } = req.body;
   const { password } = req.body;
-  match = logIn(username, password);
-  console.log("returnat match: ", match);
+  
+  logIn(username, password).then(match => {
+    console.log("match: ", match)
+    // console.log("returnat match: ", match);
 
-  if (match === true) {
-    console.log("match");
-    const session = sessionManager.createNewSession();
-    res.cookie("session-id", session.id).redirect("/");
-  } else {
-    console.log("no match");
-    res.redirect("/login");
-  }
+    if (match === true) {
+      console.log("match");
+      const session = sessionManager.createNewSession();
+      res.cookie("session-id", session.id).redirect("/");
+    } else {
+      console.log("no match");
+      res.redirect("/login");
+    }
+  })
 });
 
-function insertToDatabase(username, password){
-db.run("INSERT INTO users (username, password) VALUES (?,?)",[username, password]);
-}
 
 publicRouter.post("/registration", (req, res) => {
   console.log(req.body);
@@ -112,7 +116,7 @@ publicRouter.post("/registration", (req, res) => {
     okUser = false;
 
   }
-
+  console.log("testar okUser")
   if (okUser){
     insertToDatabase(username, password)
     const session = sessionManager.createNewSession();
@@ -122,7 +126,6 @@ publicRouter.post("/registration", (req, res) => {
     res.redirect("/registration?error=felaktig input")
   }
 
-  
 });
 
 privateRouter.post("/logout", (req, res) => {
