@@ -12,7 +12,7 @@ function invalidNewPassword(username, password, confirm) {
   }
   if (password.length < 3 || username.length < 3) {
     // antalet tecken
-    console.log("måste vara minst 3 tecken");
+    console.log("användarnamn och lösenord måste vara minst 3 tecken");
     return true;
   }
 
@@ -21,7 +21,7 @@ function invalidNewPassword(username, password, confirm) {
     password.replace(/[^0-9]/g, "").length === 0
   ) {
     // antalet siffror
-    console.log("måste vara minst 1 siffra");
+    console.log("användarnamn och lösenord måste vara minst 1 siffra");
     return true;
   }
 
@@ -30,7 +30,7 @@ function invalidNewPassword(username, password, confirm) {
     password.replace(/[a-zA-Z]/g, "").length === 0
   ) {
     // antalet bokstäver
-    console.log("måste vara minst 1 bokstav");
+    console.log("användarnamn och lösenord måste vara minst 1 bokstav");
     return true;
   }
 
@@ -59,29 +59,29 @@ async function logIn(username, password) {
   await db.each(
     "SELECT * FROM users WHERE username=? AND password=?",
     [username, password],
-    (err, row) => {
+    (err) => {
       if (err) {
         console.log("error");
         throw new Error(err);
       } else {
         match = true;
-        console.log("matchning");
-        console.log(row);
+        // console.log("matchning");
+        // console.log(row);
       }
     }
   );
   
-  console.log(match);
+  // console.log(match);
   return match;
 }
 
 publicRouter.post("/login", (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   // let match = false;
   const { username } = req.body;
   const { password } = req.body;
   
-  logIn(username, password).then(match => {
+  logIn(username, password).then(match => {       // match är antingen true eller false  
     console.log("match: ", match)
     // console.log("returnat match: ", match);
 
@@ -91,7 +91,7 @@ publicRouter.post("/login", (req, res) => {
       res.cookie("session-id", session.id).redirect("/");
     } else {
       console.log("no match");
-      res.redirect("/login");
+      res.redirect("/login?error=felaktig inloggning");
     }
   })
 });
@@ -133,7 +133,7 @@ privateRouter.post("/logout", (req, res) => {
 
   // FIXME
 
-  res.redirect("/login?error=FIXME");
+  res.redirect("/login");
 });
 
 export default {
