@@ -13,10 +13,10 @@ class SessionManager {
     return this.sessions.get(id);
   }
 
-  createNewSession() {
+  createNewSession(username) {
+    console.log("skapar session")
     const id = uuidv4();
-    this.sessions.set(id, { id });
-
+    this.sessions.set(id, {id, username});
     return this.findSessionById(id);
   }
 }

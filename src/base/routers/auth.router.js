@@ -52,7 +52,7 @@ async function invalidNewUsername(username) {
 
 function insertToDatabase(username, password){
   db.run("INSERT INTO users (username, password) VALUES (?,?)",[username, password]);
-  }
+}
 
 async function logIn(username, password) {
   let match = false;
@@ -87,15 +87,16 @@ publicRouter.post("/login", (req, res) => {
 
     if (match === true) {
       console.log("match");
-      const session = sessionManager.createNewSession();
+      const session = sessionManager.createNewSession(username);
+      
       res.cookie("session-id", session.id).redirect("/");
+      // cookieList.append
     } else {
       console.log("no match");
       res.redirect("/login?error=felaktig inloggning");
     }
   })
 });
-
 
 publicRouter.post("/registration", (req, res) => {
   console.log(req.body);

@@ -1,22 +1,21 @@
-import { response } from "express";
+// import { response } from "express";
 
 const requireAuth = (req, res, next) => {
-  next();
   console.log("kör requireAuth middleware");
-  console.log(
-    `[${req.method}] ${req.cookie} ${req.url}`
-  );
+  // console.log(
+  //   `[${req.method}] ${req.cookie} ${req.url}`
+  // );
+  console.log(req.headers.cookie)
+  // console.log(res.headers.cookie)
+  
 
-  if(req.cookie === undefined){
-    // res.redirect = "/login";
-    // response.redirect(res.redirect("/login"));
-    response.redirect("/login");
+  if(req.headers.cookie === undefined){
+    console.log("cookie undefined")
+    res.redirect("/login");
   } else {
-    // res.redirect = "/";
-    // response.redirect(res.redirect("/"));
-    response.redirect("/");
+    console.log("cookie exists")
+    next();
   }
-
 };
 
 export default requireAuth;

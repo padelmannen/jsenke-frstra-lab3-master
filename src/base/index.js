@@ -8,6 +8,7 @@ import { publicPath } from "./util.js";
 
 const port = 8989;
 const app = express();
+// let cookieList = {};
 
 // Register a custom middleware for logging incoming requests
 app.use(logAndTime);
