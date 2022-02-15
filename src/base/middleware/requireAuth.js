@@ -1,4 +1,5 @@
 // import { response } from "express";
+import sessionManager from "../sessionManager.js";
 
 
 const requireAuth = (req, res, next) => {
@@ -6,17 +7,17 @@ const requireAuth = (req, res, next) => {
   // console.log(
   //   `[${req.method}] ${req.cookie} ${req.url}`
   // );
-  console.log(req.headers.cookie)
   // console.log(res.headers.cookie)
 
-  
-
-  if(req.headers.cookie === undefined){
-    console.log("cookie undefined")
-    res.redirect("/login");
-  } else {
+  try{
+    const id = req.headers.cookie.split("=")[1]
+    const {username} = sessionManager.findSessionById(id);
+    console.log(username)
     console.log("cookie exists")
     next();
+  } catch (TypeError){
+    console.log("cookie undefined")
+    res.redirect("/login");
   }
 };
 
