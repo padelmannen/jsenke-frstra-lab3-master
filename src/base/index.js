@@ -30,7 +30,7 @@ app.use("/", requireAuth, ProfileRouter.privateRouter);
 
 // Serve static files
 app.use(express.static(publicPath));
-console.log(publicPath)
+console.log(publicPath);
 
 app.listen(port, () => {
   console.info(`Listening on http://localhost:${port}`);

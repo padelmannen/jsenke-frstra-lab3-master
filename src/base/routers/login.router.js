@@ -9,7 +9,7 @@ publicRouter.get("/login", async (req, res) => {
   // console.log(req.head)
   // console.log("pubRuter Body: ")
   // console.log(req.body);
-  console.log("kör pub router login")
+  console.log("kör pub router login");
 
   const htmlDoc = await readFile(resolvePublicPath("login.html"));
 

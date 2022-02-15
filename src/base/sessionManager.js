@@ -14,9 +14,9 @@ class SessionManager {
   }
 
   createNewSession(username) {
-    console.log("skapar session")
+    console.log("skapar session");
     const id = uuidv4();
-    this.sessions.set(id, {id, username});
+    this.sessions.set(id, { id, username });
     return this.findSessionById(id);
   }
 }
