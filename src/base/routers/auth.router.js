@@ -5,39 +5,7 @@ import sessionManager from "../sessionManager.js";
 const publicRouter = Router();
 const privateRouter = Router();
 
-function invalidNewPassword(username, password, confirm) {
-  if (password !== confirm) {
-    console.log("lösenord stämmer inte överens"); // kolla så att lösenorden stämmer överens
-    return true;
-  }
-  if (password.length < 3 || username.length < 3) {
-    // antalet tecken
-    console.log("användarnamn och lösenord måste vara minst 3 tecken");
-    return true;
-  }
-
-  if (
-    username.replace(/[^0-9]/g, "").length === 0 ||
-    password.replace(/[^0-9]/g, "").length === 0
-  ) {
-    // antalet siffror
-    console.log("användarnamn och lösenord måste vara minst 1 siffra");
-    return true;
-  }
-
-  if (
-    username.replace(/[a-zA-Z]/g, "").length === 0 ||
-    password.replace(/[a-zA-Z]/g, "").length === 0
-  ) {
-    // antalet bokstäver
-    console.log("användarnamn och lösenord måste vara minst 1 bokstav");
-    return true;
-  }
-
-  return false;;
-}
-
-async function invalidNewUsername(username) {
+async function usernameExists(username) {
   await db.each("SELECT * FROM users WHERE username=?", [username], (err) => {
     // kolla så att användarnamnet inte redan finns
     if (err) {
@@ -48,6 +16,62 @@ async function invalidNewUsername(username) {
     }
   });
   return false;
+}
+
+function isCorrectConfirm(password, confirm){  // kolla så att lösenorden stämmer överens
+  return (password === confirm) 
+    // console.log("lösenord stämmer inte överens"); 
+}
+
+function isLongerThan3(input){ 
+  return (input.length > 2)
+}
+
+function hasNoLetter (input){
+  return (input.replace(/[^0-9]/g, "").length === 0)
+}
+
+function hasNoNumber (input){
+  return (input.replace(/[a-zA-Z]/g, "").length === 0)
+}
+
+function checkUsername(username){
+  let errMess = ""
+  usernameExists(username).then((exists) => {
+    if (exists) {
+      errMess = "Användarnamnet är upptaget"
+    }
+  });
+  if (errMess !== ""){
+    return errMess
+  }
+  if (!(isLongerThan3(username))){
+    return "användarnamnet måste ha minst 3 tecken"
+  }
+  if (hasNoLetter(username)){
+    return "användarnamnet måste ha minst 1 bokstav"
+  }
+  if (hasNoNumber(username)){
+    return "användarnamnet måste ha minst 1 siffra"
+  }
+  return ""
+}
+
+function checkPassword (password, confirm){ 
+ 
+  if (!(isCorrectConfirm(password, confirm))){
+    return "lösenorden stämmer inte överens"
+  }
+  if (!(isLongerThan3(password))){
+    return "lösenordet måste ha minst 3 tecken"
+  }
+  if (hasNoLetter(password)){
+    return "lösenordet måste ha minst 1 bokstav"
+  }
+  if (hasNoNumber(password)){
+    return "lösenordet måste ha minst 1 siffra"
+  }
+  return ""
 }
 
 function insertToDatabase(username, password){
@@ -88,7 +112,6 @@ publicRouter.post("/login", (req, res) => {
     if (match === true) {
       console.log("match");
       const session = sessionManager.createNewSession(username);
-      
       res.cookie("session-id", session.id).redirect("/");
       // cookieList.append
     } else {
@@ -105,28 +128,28 @@ publicRouter.post("/registration", (req, res) => {
   const { password } = req.body;
   const { confirm } = req.body;
 
-  let okUser = true;
+  // let okUser = true;
+  
 
-  invalidNewUsername(username).then((invalidInput) => {
-    if (invalidInput) {
-      okUser = false;
-    }
-  });
+  // usernameExists(username).then((exists) => {
+  //   if (exists) {
+  //     usernameError = "användarnamnet är upptaget"
+  //   }
+  // });
 
-  if (invalidNewPassword(username, password, confirm)) {
-    okUser = false;
+  const usernameError = checkUsername(username)
+  const passwordError = checkPassword(password, confirm)
 
-  }
   console.log("testar okUser")
-  if (okUser){
+
+  if ((usernameError ==="")&&(passwordError==="")){
     insertToDatabase(username, password)
     const session = sessionManager.createNewSession();
     res.cookie("session-id", session.id).redirect("/login");
   }
   else{
-    res.redirect("/registration?error=felaktig input")
+    res.redirect(`/registration?error=${usernameError}\n${passwordError}`)
   }
-
 });
 
 privateRouter.post("/logout", (req, res) => {

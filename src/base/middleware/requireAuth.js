@@ -1,5 +1,6 @@
 // import { response } from "express";
 
+
 const requireAuth = (req, res, next) => {
   console.log("kör requireAuth middleware");
   // console.log(
@@ -7,6 +8,7 @@ const requireAuth = (req, res, next) => {
   // );
   console.log(req.headers.cookie)
   // console.log(res.headers.cookie)
+
   
 
   if(req.headers.cookie === undefined){
