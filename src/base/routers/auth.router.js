@@ -133,7 +133,7 @@ privateRouter.post("/logout", (req, res) => {
 
   // FIXME
 
-  res.redirect("/login");
+  res.redirect("/login?success=Du är utloggad!");
 });
 
 export default {

@@ -8,6 +8,7 @@ const logAndTime = (req, res, next) => {
 
   const t = Date.now();
   next();
+  console.log("kör logAndTime middleware");
   console.log(
     `[${res.statusCode}] ${req.method} ${req.url} (${Date.now() - t}ms)`
   );
