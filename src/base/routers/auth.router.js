@@ -18,64 +18,67 @@ async function usernameExists(username) {
   return false;
 }
 
-function isCorrectConfirm(password, confirm){  // kolla så att lösenorden stämmer överens
-  return (password === confirm) 
-    // console.log("lösenord stämmer inte överens"); 
+function isCorrectConfirm(password, confirm) {
+  // kolla så att lösenorden stämmer överens
+  return password === confirm;
+  // console.log("lösenord stämmer inte överens");
 }
 
-function isLongerThan3(input){ 
-  return (input.length > 2)
+function isLongerThan3(input) {
+  return input.length > 2;
 }
 
-function hasNoLetter (input){
-  return (input.replace(/[^0-9]/g, "").length === 0)
+function hasNoLetter(input) {
+  return input.replace(/[^0-9]/g, "").length === 0;
 }
 
-function hasNoNumber (input){
-  return (input.replace(/[a-zA-Z]/g, "").length === 0)
+function hasNoNumber(input) {
+  return input.replace(/[a-zA-Z]/g, "").length === 0;
 }
 
-function checkUsername(username){
-  let errMess = ""
+function checkUsername(username) {
+  let errMess = "";
   usernameExists(username).then((exists) => {
     if (exists) {
-      errMess = "Användarnamnet är upptaget"
+      errMess = "Användarnamnet är upptaget";
     }
   });
-  if (errMess !== ""){
-    return errMess
+  if (errMess !== "") {
+    return errMess;
   }
-  if (!(isLongerThan3(username))){
-    return "användarnamnet måste ha minst 3 tecken"
+  if (!isLongerThan3(username)) {
+    return "användarnamnet måste ha minst 3 tecken";
   }
-  if (hasNoLetter(username)){
-    return "användarnamnet måste ha minst 1 bokstav"
+  if (hasNoLetter(username)) {
+    return "användarnamnet måste ha minst 1 bokstav";
   }
-  if (hasNoNumber(username)){
-    return "användarnamnet måste ha minst 1 siffra"
+  if (hasNoNumber(username)) {
+    return "användarnamnet måste ha minst 1 siffra";
   }
-  return ""
+  return "";
 }
 
-function checkPassword (password, confirm){ 
- 
-  if (!(isCorrectConfirm(password, confirm))){
-    return "lösenorden stämmer inte överens"
+function checkPassword(password, confirm) {
+  if (!isCorrectConfirm(password, confirm)) {
+    return "lösenorden stämmer inte överens";
   }
-  if (!(isLongerThan3(password))){
-    return "lösenordet måste ha minst 3 tecken"
+  if (!isLongerThan3(password)) {
+    return "lösenordet måste ha minst 3 tecken";
   }
-  if (hasNoLetter(password)){
-    return "lösenordet måste ha minst 1 bokstav"
+  if (hasNoLetter(password)) {
+    return "lösenordet måste ha minst 1 bokstav";
   }
-  if (hasNoNumber(password)){
-    return "lösenordet måste ha minst 1 siffra"
+  if (hasNoNumber(password)) {
+    return "lösenordet måste ha minst 1 siffra";
   }
-  return ""
+  return "";
 }
 
-function insertToDatabase(username, password){
-  db.run("INSERT INTO users (username, password) VALUES (?,?)",[username, password]);
+function insertToDatabase(username, password) {
+  db.run("INSERT INTO users (username, password) VALUES (?,?)", [
+    username,
+    password,
+  ]);
 }
 
 async function logIn(username, password) {
@@ -94,7 +97,7 @@ async function logIn(username, password) {
       }
     }
   );
-  
+
   // console.log(match);
   return match;
 }
@@ -104,9 +107,10 @@ publicRouter.post("/login", (req, res) => {
   // let match = false;
   const { username } = req.body;
   const { password } = req.body;
-  
-  logIn(username, password).then(match => {       // match är antingen true eller false  
-    console.log("match: ", match)
+
+  logIn(username, password).then((match) => {
+    // match är antingen true eller false
+    console.log("match: ", match);
     // console.log("returnat match: ", match);
 
     if (match === true) {
@@ -118,7 +122,7 @@ publicRouter.post("/login", (req, res) => {
       console.log("no match");
       res.redirect("/login?error=felaktig inloggning");
     }
-  })
+  });
 });
 
 publicRouter.post("/registration", (req, res) => {
@@ -128,27 +132,18 @@ publicRouter.post("/registration", (req, res) => {
   const { password } = req.body;
   const { confirm } = req.body;
 
-  // let okUser = true;
-  
+  const usernameError = checkUsername(username);
+  const passwordError = checkPassword(password, confirm);
 
-  // usernameExists(username).then((exists) => {
-  //   if (exists) {
-  //     usernameError = "användarnamnet är upptaget"
-  //   }
-  // });
+  console.log("testar okUser");
 
-  const usernameError = checkUsername(username)
-  const passwordError = checkPassword(password, confirm)
-
-  console.log("testar okUser")
-
-  if ((usernameError ==="")&&(passwordError==="")){
-    insertToDatabase(username, password)
+  if (usernameError === "" && passwordError === "") {
+    insertToDatabase(username, password);
     const session = sessionManager.createNewSession();
     res.cookie("session-id", session.id).redirect("/login");
-  }
-  else{
-    res.redirect(`/registration?error=${usernameError}\n${passwordError}`)
+  } else {
+    console.log("redirectar error")
+    res.redirect(`/registration?error=${usernameError}\n${passwordError}`);
   }
 });
 
