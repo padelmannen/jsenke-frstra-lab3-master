@@ -119,7 +119,7 @@ publicRouter.post("/registration", (req, res) => {
   console.log("testar okUser")
   if (okUser){
     insertToDatabase(username, password)
-    const session = sessionManager.createNewSession();
+    const session = sessionManager.createNewSession(username);
     res.cookie("session-id", session.id).redirect("/login");
   }
   else{
