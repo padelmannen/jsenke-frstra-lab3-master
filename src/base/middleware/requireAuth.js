@@ -14,6 +14,9 @@ const requireAuth = (req, res, next) => {
     const {username} = sessionManager.findSessionById(id);
     console.log(username)
     console.log("cookie exists")
+
+    // behöver redirecta till inloggade sidan om man ändrar url till "/login"
+
     next();
   } catch (TypeError){
     console.log("cookie undefined")

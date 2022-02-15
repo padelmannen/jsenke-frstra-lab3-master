@@ -19,6 +19,10 @@ class SessionManager {
     this.sessions.set(id, {id, username});
     return this.findSessionById(id);
   }
+
+  endSession(id){
+    this.sessions.delete(id);
+  }
 }
 
 export default new SessionManager();
