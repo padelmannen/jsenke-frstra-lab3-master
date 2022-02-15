@@ -16,7 +16,10 @@ privateRouter.get("/", async (req, res) => {
   const id = req.headers.cookie.split("=")[1];
 
   console.log(req.method);
-  const { username } = sessionManager.findSessionById(id);
+
+  const {username} = sessionManager.findSessionById(id);
+
+  
 
   const htmlDoc = (await readFile(resolvePublicPath("index.html"))).replace(
     "$username$",

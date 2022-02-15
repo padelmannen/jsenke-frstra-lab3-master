@@ -150,7 +150,10 @@ publicRouter.post("/registration", (req, res) => {
 privateRouter.post("/logout", (req, res) => {
   console.log(req.body);
 
-  // FIXME
+  const id = req.headers.cookie.split("=")[1];
+  
+  console.log("invaliderar cookie!")
+  sessionManager.endSession(id);
 
   res.redirect("/login?success=Du är utloggad!");
 });
