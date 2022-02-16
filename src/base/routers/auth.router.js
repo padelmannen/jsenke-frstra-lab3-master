@@ -142,7 +142,7 @@ publicRouter.post("/login", (req, res) => {
       // cookieList.append
     } else {
       console.log("no match");
-      res.redirect("/login?error=felaktig inloggning");
+      res.redirect("/login?error=Felaktig inloggning!");
     }
   });
 });
@@ -164,8 +164,10 @@ publicRouter.post("/registration", (req, res) => {
     const hashedPassword = bcrypt.hashSync(password, 10);
     console.log(hashedPassword)
     insertToDatabase(username, hashedPassword);
-    const session = sessionManager.createNewSession();
-    res.cookie("session-id", session.id).redirect("/login");
+    // const session = sessionManager.createNewSession();
+    // res.cookie("session-id", session.id).redirect("/login");
+    res.redirect("/login?success=Ny användare registrerad!");
+
   } else {
     console.log("redirectar error")
     res.redirect(`/registration?error=${usernameError}\n${passwordError}`);
