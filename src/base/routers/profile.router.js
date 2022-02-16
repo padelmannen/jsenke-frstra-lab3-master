@@ -15,7 +15,7 @@ privateRouter.get("/", async (req, res) => {
   // const {cookie} = req.headers
   const id = req.headers.cookie.split("=")[1];
 
-  console.log(req.method);
+  // console.log(req.method);
 
   const {username} = sessionManager.findSessionById(id);
 

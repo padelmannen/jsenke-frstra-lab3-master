@@ -1,5 +1,8 @@
 // import { response } from "express";
+// import { redirect } from "express/lib/response";
+// import loginRouter from "../routers/login.router.js";
 import sessionManager from "../sessionManager.js";
+
 
 const requireAuth = (req, res, next) => {
   console.log("kör requireAuth middleware");
@@ -8,19 +11,28 @@ const requireAuth = (req, res, next) => {
   // );
   // console.log(res.headers.cookie)
 
+
+
+
   try{
     const id = req.headers.cookie.split("=")[1]
-    const {username} = sessionManager.findSessionById(id);
-    console.log(username)
-    console.log("cookie exists")
-
-    // behöver redirecta till inloggade sidan om man ändrar url till "/login"
-
-    next();
+    sessionManager.isInvalidSession(id)
+    sessionManager.findSessionById(id);
+    console.log("A")
+    next()
+    console.log("B")
   } catch (TypeError){
     console.log(req.headers.cookie)
     console.log("cookie undefined")
+    console.log("C")
     res.redirect("/login");
+    console.log("D")
+    // loginRouter.publicRouter(req, res)
+    // const htmlDoc = await readFile(resolvePublicPath("login.html"));
+    // const htmlDoc = readFile(resolvePublicPath("login.html"));
+    // res.status(200).send(htmlDoc);
+
+    // next()
   }
 };
 

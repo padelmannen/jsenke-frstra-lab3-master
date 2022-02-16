@@ -12,6 +12,7 @@ const logAndTime = (req, res, next) => {
   console.log(
     `[${res.statusCode}] ${req.method} ${req.url} (${Date.now() - t}ms)`
   );
+  
 };
 
 export default logAndTime;
