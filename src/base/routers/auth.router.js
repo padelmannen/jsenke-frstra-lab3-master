@@ -120,7 +120,7 @@ publicRouter.post("/login", (req, res) => {
       // cookieList.append
     } else {
       console.log("no match");
-      res.redirect("/login?error=felaktig inloggning");
+      res.redirect("/login?error=Felaktig inloggning!");
     }
   });
 });
@@ -139,8 +139,9 @@ publicRouter.post("/registration", (req, res) => {
 
   if (usernameError === "" && passwordError === "") {
     insertToDatabase(username, password);
-    const session = sessionManager.createNewSession();
-    res.cookie("session-id", session.id).redirect("/login");
+    // const session = sessionManager.createNewSession(username);
+    // res.cookie("session-id", session.id).redirect("/");
+    res.redirect("/login?success=Ny användare registrerad!");
   } else {
     console.log("redirectar error")
     res.redirect(`/registration?error=${usernameError}\n${passwordError}`);
