@@ -28,6 +28,8 @@ app.use("/api", requireAuth, AuthenticationRouter.privateRouter);
 app.use("/", LoginRouter.publicRouter);
 app.use("/", requireAuth, ProfileRouter.privateRouter);
 
+// app.use("/", requireAuth, LoginRouter.publicRouter);
+
 // Serve static files
 app.use(express.static(publicPath));
 console.log(publicPath)

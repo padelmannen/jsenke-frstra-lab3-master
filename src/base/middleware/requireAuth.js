@@ -1,5 +1,6 @@
 // import { response } from "express";
 import sessionManager from "../sessionManager.js";
+// import LoginRouter from "../routers/login.router.js";
 
 
 const requireAuth = (req, res, next) => {
@@ -20,7 +21,12 @@ const requireAuth = (req, res, next) => {
     next();
   } catch (TypeError){
     console.log("cookie undefined")
-    res.redirect("/login");
+    res.redirect("../login");
+    // next();
+    // res.redirect("/login");
+    // next(LoginRouter.publicRouter);
+    // next();
+
   }
 };
 

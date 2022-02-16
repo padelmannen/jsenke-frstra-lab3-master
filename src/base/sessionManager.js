@@ -23,6 +23,7 @@ class SessionManager {
   endSession(id){
     this.sessions.delete(id);
   }
-}
+
+} 
 
 export default new SessionManager();
