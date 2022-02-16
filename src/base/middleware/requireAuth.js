@@ -18,6 +18,7 @@ const requireAuth = (req, res, next) => {
 
     next();
   } catch (TypeError){
+    console.log(req.headers.cookie)
     console.log("cookie undefined")
     res.redirect("/login");
   }
