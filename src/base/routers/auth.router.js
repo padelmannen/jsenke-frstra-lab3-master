@@ -40,29 +40,35 @@ function hasNoNumber(input) {
 }
 
 function checkUsername(username) {
-  usernameExists(username).then((exists) => {
+  let errMess = "";
+  
+  if( usernameExists(username).then((exists) => {
     console.log(exists)
     if (exists) {
-      const errMess = "Användarnamnet är upptaget";
+      errMess = "Användarnamnet är upptaget";
     } 
     else{
-      const errMess = ""
+      errMess = "";
     }
-  })
+  })) errMess = "Användarnamnet är upptaget";
+  else{
+    if (!isLongerThan3(username)) {
+      return "användarnamnet måste ha minst 3 tecken";
+    }
+    if (hasNoLetter(username)) {
+      return "användarnamnet måste ha minst 1 bokstav";
+    }
+    if (hasNoNumber(username)) {
+      return "användarnamnet måste ha minst 1 siffra";
+    }
+    return errMess;
+  }
+  return errMess;
   // console.log("errmess", errMess)
   // if (errMess !== "") {
   //   return errMess;
   // }
-  if (!isLongerThan3(username)) {
-    return "användarnamnet måste ha minst 3 tecken";
-  }
-  if (hasNoLetter(username)) {
-    return "användarnamnet måste ha minst 1 bokstav";
-  }
-  if (hasNoNumber(username)) {
-    return "användarnamnet måste ha minst 1 siffra";
-  }
-  return errMess;
+  
 }
 
 function checkPassword(password, confirm) {
