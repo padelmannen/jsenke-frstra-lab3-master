@@ -13,7 +13,7 @@ publicRouter.get("/login", async (req, res) => {
   console.log("kör pub router login");
   // console.log(res)
 
-  if(!sessionManager.findSessionById(req.headers.cookie.split("=")[1])){
+  if(req.headers.cookie === undefined || !sessionManager.findSessionById(req.headers.cookie.split("=")[1])){
     const htmlDoc = await readFile(resolvePublicPath("login.html"));
     res.status(200).send(htmlDoc);
   }
@@ -27,7 +27,7 @@ publicRouter.get("/login", async (req, res) => {
 publicRouter.get("/registration", async (req, res) => {
   console.log("kör pub router reqistration");
   
-  if(!sessionManager.findSessionById(req.headers.cookie.split("=")[1])){
+  if(req.headers.cookie === undefined || !sessionManager.findSessionById(req.headers.cookie.split("=")[1])){
     const htmlDoc = await readFile(resolvePublicPath("registration.html"));
     res.status(200).send(htmlDoc);
   }
