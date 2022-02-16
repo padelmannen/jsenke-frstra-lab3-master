@@ -39,20 +39,18 @@ function hasNoNumber(input) {
   return input.replace(/[a-zA-Z]/g, "").length === 0;
 }
 
-function checkUsername(username) {
-  usernameExists(username).then((exists) => {
+async function checkUsername(username) {
+  let errMess
+  await usernameExists(username).then((exists) => {
     console.log(exists)
     if (exists) {
-      const errMess = "Användarnamnet är upptaget";
+      errMess = "Användarnamnet är upptaget";
     } 
     else{
-      const errMess = ""
+      errMess = ""
     }
   })
-  // console.log("errmess", errMess)
-  // if (errMess !== "") {
-  //   return errMess;
-  // }
+
   if (!isLongerThan3(username)) {
     return "användarnamnet måste ha minst 3 tecken";
   }
@@ -131,18 +129,19 @@ publicRouter.post("/registration", (req, res) => {
   const { password } = req.body;
   const { confirm } = req.body;
 
-  const usernameError = checkUsername(username);
-  const passwordError = checkPassword(password, confirm);
+  checkUsername(username).then((usernameError)=>{
+    const passwordError = checkPassword(password, confirm);
 
-  if (usernameError === "" && passwordError === "") {
-    const hashedPassword = bcrypt.hashSync(password, 10);
-    insertToDatabase(username, hashedPassword);
-    res.redirect("/login?success=Ny användare registrerad!");
-  } else {
-    console.log("redirectar error");
-    res.redirect(`/registration?error=${usernameError}\n${passwordError}`);
-  }
-});
+    if (usernameError === "" && passwordError === "") {
+      const hashedPassword = bcrypt.hashSync(password, 10);
+      insertToDatabase(username, hashedPassword);
+      res.redirect("/login?success=Ny användare registrerad!");
+    } else {
+      console.log("redirectar error");
+      res.redirect(`/registration?error=${usernameError}\n${passwordError}`);
+    }
+  });
+})
 
 privateRouter.post("/logout", (req, res) => {
   const id = req.headers.cookie.split("=")[1];
