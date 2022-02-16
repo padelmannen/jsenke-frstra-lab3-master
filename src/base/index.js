@@ -26,7 +26,12 @@ app.use("/api", AuthenticationRouter.publicRouter);
 app.use("/api", requireAuth, AuthenticationRouter.privateRouter);
 
 app.use("/", LoginRouter.publicRouter);
-app.use("/", express.static(publicPath, {index: false}), requireAuth, ProfileRouter.privateRouter);
+app.use(
+  "/",
+  express.static(publicPath, { index: false }),
+  requireAuth,
+  ProfileRouter.privateRouter
+);
 // app.use("/", requireAuth, LoginRouter.publicRouter);
 
 app.use(express.static(publicPath));
