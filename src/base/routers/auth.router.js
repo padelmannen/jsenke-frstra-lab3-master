@@ -1,4 +1,5 @@
 import { Router } from "express";
+import * as bcrypt from 'bcrypt';
 import db from "../database.js";
 import sessionManager from "../sessionManager.js";
 
@@ -81,16 +82,35 @@ function insertToDatabase(username, password) {
   ]);
 }
 
+// function hashPassword(password){
+//   bcrypt.hash(password, 10, (err, hashedPassword) => {
+//     console.log(hashedPassword)
+//     if (err){
+//       console.log("hash error")
+//       throw new Error (err)
+//     }
+//     else{
+//       return hashedPassword
+//     }
+//   })
+// }
+
 async function logIn(username, password) {
   let match = false;
+  console.log("password", password)
+  // const hashedPassword = hashPassword(password)
+  // console.log(hashedPassword)
   await db.each(
-    "SELECT * FROM users WHERE username=? AND password=?",
-    [username, password],
-    (err) => {
+    "SELECT password FROM users WHERE username=?",
+    [username],
+    (err, hashedPassword) => {
+      console.log(hashedPassword)
       if (err) {
         console.log("error");
         throw new Error(err);
       } else {
+        // hashedPassword.toString()
+        bcrypt.compareSync(password,  hashedPassword.toString()); // true om rätt lösen 
         match = true;
         // console.log("matchning");
         // console.log(row);
@@ -102,11 +122,13 @@ async function logIn(username, password) {
   return match;
 }
 
+
 publicRouter.post("/login", (req, res) => {
   // console.log(req.body);
   // let match = false;
   const { username } = req.body;
   const { password } = req.body;
+  // const hashedPassword = hashPassword(password)
 
   logIn(username, password).then((match) => {
     // match är antingen true eller false
@@ -130,6 +152,7 @@ publicRouter.post("/registration", (req, res) => {
 
   const { username } = req.body;
   const { password } = req.body;
+
   const { confirm } = req.body;
 
   const usernameError = checkUsername(username);
@@ -138,7 +161,9 @@ publicRouter.post("/registration", (req, res) => {
   console.log("testar okUser");
 
   if (usernameError === "" && passwordError === "") {
-    insertToDatabase(username, password);
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    console.log(hashedPassword)
+    insertToDatabase(username, hashedPassword);
     const session = sessionManager.createNewSession();
     res.cookie("session-id", session.id).redirect("/login");
   } else {

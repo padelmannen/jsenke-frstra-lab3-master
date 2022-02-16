@@ -16,6 +16,7 @@
     "start": "node src/base/index.js"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "express": "^4.17.2",
     "sqlite": "^4.0.23",
     "sqlite3": "^5.0.2",
