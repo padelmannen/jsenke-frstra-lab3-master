@@ -28,7 +28,7 @@ app.use("/api", requireAuth, AuthenticationRouter.privateRouter);
 app.use("/", LoginRouter.publicRouter);
 app.use(
   "/",
-  express.static(publicPath, { index: false }),
+  express.static(publicPath, { index: false }), // ny för att köra index före html sidorna
   requireAuth,
   ProfileRouter.privateRouter
 );

@@ -10,13 +10,12 @@ async function usernameExists(username) {
   let exists = false;
   await db.each("SELECT * FROM users WHERE username=?", [username], (err) => {
     // kolla så att användarnamnet inte redan finns
-    console.log("user finns")
+    console.log("user finns");
     if (err) {
       throw new Error(err);
     } else {
       exists = true;
     }
-
   });
   return exists;
 }
@@ -40,16 +39,15 @@ function hasNoNumber(input) {
 }
 
 async function checkUsername(username) {
-  let errMess
+  let errMess;
   await usernameExists(username).then((exists) => {
-    console.log(exists)
+    console.log(exists);
     if (exists) {
       errMess = "Användarnamnet är upptaget";
-    } 
-    else{
-      errMess = ""
+    } else {
+      errMess = "";
     }
-  })
+  });
 
   if (!isLongerThan3(username)) {
     return "användarnamnet måste ha minst 3 tecken";
@@ -129,7 +127,7 @@ publicRouter.post("/registration", (req, res) => {
   const { password } = req.body;
   const { confirm } = req.body;
 
-  checkUsername(username).then((usernameError)=>{
+  checkUsername(username).then((usernameError) => {
     const passwordError = checkPassword(password, confirm);
 
     if (usernameError === "" && passwordError === "") {
@@ -141,7 +139,7 @@ publicRouter.post("/registration", (req, res) => {
       res.redirect(`/registration?error=${usernameError}\n${passwordError}`);
     }
   });
-})
+});
 
 privateRouter.post("/logout", (req, res) => {
   const id = req.headers.cookie.split("=")[1];

@@ -11,6 +11,7 @@ const requireAuth = (req, res, next) => {
     sessionManager.findSessionById(id);
     next();
   } catch (TypeError) {
+    // om det inte finns en kaka eller om kakan inte är koppladd till en session
     res.redirect("/login");
   }
 };
