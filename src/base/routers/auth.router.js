@@ -42,7 +42,7 @@ function hasNoNumber(input) {
 function checkUsername(username) {
   let errMess = "";
   
-  if( usernameExists(username).then((exists) => {
+  if(usernameExists(username).then((exists) => {
     console.log(exists)
     if (exists) {
       errMess = "Användarnamnet är upptaget";
@@ -50,20 +50,19 @@ function checkUsername(username) {
     else{
       errMess = "";
     }
-  })) errMess = "Användarnamnet är upptaget";
-  else{
-    if (!isLongerThan3(username)) {
-      return "användarnamnet måste ha minst 3 tecken";
-    }
-    if (hasNoLetter(username)) {
-      return "användarnamnet måste ha minst 1 bokstav";
-    }
-    if (hasNoNumber(username)) {
-      return "användarnamnet måste ha minst 1 siffra";
-    }
-    return errMess;
+  })) {console.log(errMess)}
+  if (!isLongerThan3(username)) {
+    return "användarnamnet måste ha minst 3 tecken";
+  }
+  if (hasNoLetter(username)) {
+    return "användarnamnet måste ha minst 1 bokstav";
+  }
+  if (hasNoNumber(username)) {
+    return "användarnamnet måste ha minst 1 siffra";
   }
   return errMess;
+
+
   // console.log("errmess", errMess)
   // if (errMess !== "") {
   //   return errMess;
